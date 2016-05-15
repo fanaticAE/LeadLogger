@@ -21,9 +21,11 @@ func Format(format LogFormat) {
 }
 
 func Start(targets ...LogTarget) {
-	_logChan = make(chan *logEntry, _channelBufferSize)
-	_syncChan = make(chan bool)
-	go handleLogging(targets)
+	if !Running() {
+		_logChan = make(chan *logEntry, _channelBufferSize)
+		_syncChan = make(chan bool)
+		go handleLogging(targets)
+	}
 }
 
 func Stop() {
