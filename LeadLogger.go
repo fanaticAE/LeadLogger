@@ -29,9 +29,11 @@ func Start(targets ...LogTarget) {
 }
 
 func Stop() {
-	close(_logChan)
-	<-_syncChan
-	close(_syncChan)
+	if Running() {
+		close(_logChan)
+		<-_syncChan
+		close(_syncChan)
+	}
 }
 
 func Running() bool {
